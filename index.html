@@ -675,41 +675,60 @@
             right: 0;
             z-index: 100;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            padding: 20px 40px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 60%, transparent);
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-            left: 50%;
-            transform: translateX(-50%);
+            padding: 15px 50px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            gap: 80px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            cursor: default;
         }
 
         .game-prompt-group::-webkit-scrollbar {
             display: none;
         }
 
+        .game-prompt-group button {
+            background: rgba(201, 169, 98, 0.15);
+            border: 1px solid rgba(201, 169, 98, 0.4);
+            color: var(--accent);
+            padding: 14px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .game-prompt-group button:hover { 
+            background: rgba(201, 169, 98, 0.3); 
+            transform: translateY(-2px); 
+        }
+
         @media (max-width: 768px) {
             .game-prompt-group {
-                max-width: 100%;
-                left: 0;
-                transform: none;
-                padding: 15px 15px 25px;
-                gap: 8px !important;
-            }
-                max-width: 100%;
+                justify-content: center;
+                padding: 15px 20px;
+                gap: 10px;
+                overflow-x: visible;
             }
             
             .game-prompt-group button {
-                padding: 12px 10px;
-                font-size: 0.55rem;
-                min-width: auto;
-                flex: 1 1 calc(33.333% - 8px);
+                flex: 1 1 calc(33.333% - 10px);
                 max-width: none;
+                padding: 12px 8px;
+                font-size: 0.55rem;
             }
-            
-            .game-window {
+        }
+
+        .game-window {
                 width: 95%;
                 max-height: 85vh;
                 margin: 10px;
