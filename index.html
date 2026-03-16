@@ -675,14 +675,47 @@
             right: 0;
             z-index: 100;
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            padding: 15px 50px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-            gap: 80px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            cursor: default;
+            padding: 20px 60px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 70%, transparent);
+        }
+
+        .game-prompt-group button {
+            background: rgba(201, 169, 98, 0.15);
+            border: 1px solid rgba(201, 169, 98, 0.4);
+            color: var(--accent);
+            padding: 14px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .game-prompt-group button:hover { 
+            background: rgba(201, 169, 98, 0.3); 
+            transform: translateY(-2px); 
+        }
+
+        @media (max-width: 768px) {
+            .game-prompt-group {
+                flex-direction: column;
+                justify-content: center;
+                padding: 20px;
+                gap: 10px;
+            }
+            
+            .game-prompt-group button {
+                width: 100%;
+                max-width: 250px;
+                padding: 16px 24px;
+            }
         }
 
         .game-prompt-group::-webkit-scrollbar {
