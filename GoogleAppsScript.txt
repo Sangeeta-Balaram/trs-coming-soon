@@ -1,0 +1,22 @@
+// Google Apps Script - Save to Google Sheets
+// Copy this to your Google Sheet Apps Script
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  const data = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    data.name || '',
+    data.company || '',
+    data.projectType || '',
+    data.goal || '',
+    data.budget || '',
+    data.timeline || '',
+    data.details || '',
+    new Date()
+  ]);
+  
+  return ContentService.createTextOutput(JSON.stringify({ success: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}

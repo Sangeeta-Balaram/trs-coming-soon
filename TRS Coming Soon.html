@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | The Revieree Studios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --accent: #c9a962;
+            --accent-glow: rgba(201, 169, 98, 0.4);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+            padding: 120px 20px 40px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            padding-top: 150px;
+            opacity: 0;
+            animation: fadeInDown 1s ease forwards 0.5s;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .main-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 400;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.8s;
+            background: linear-gradient(135deg, #ffffff 0%, #c9a962 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub-text {
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.1s;
+        }
+
+        .loader-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1.4s;
+        }
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            border-radius: 50%;
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+
+        .loader-ring:nth-child(2) { animation-delay: 0.3s; }
+        .loader-ring:nth-child(3) { animation-delay: 0.6s; }
+
+        .loader-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
+            animation: centerPulse 1.5s ease-in-out infinite;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .element {
+            position: absolute;
+            border: 1px solid rgba(201, 169, 98, 0.15);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .element-1 { width: 300px; height: 300px; top: 10%; left: 5%; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        .element-2 { width: 200px; height: 200px; top: 60%; right: 10%; border-radius: 50%; animation-delay: -5s; }
+        .element-3 { width: 150px; height: 150px; bottom: 20%; left: 15%; transform: rotate(45deg); animation-delay: -10s; }
+        .element-4 { width: 100px; height: 100px; top: 30%; right: 20%; border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%; animation-delay: -15s; }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(201, 169, 98, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 169, 98, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes ringPulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.1; } }
+        @keyframes centerPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow); } 50% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 50px var(--accent-glow), 0 0 100px var(--accent-glow); } }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-20px) rotate(5deg); } 50% { transform: translateY(0) rotate(0deg); } 75% { transform: translateY(20px) rotate(-5deg); } }
+        @keyframes particleFloat { 0% { opacity: 0; transform: translateY(100vh) scale(0); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateY(-100px) scale(1); } }
+
+/* Game Canvas - Disabled 
+        .game-bg-canvas {
+            display: none;
+        }
+         */
+
+        .game-bg-canvas.active {
+            z-index: 50;
+            pointer-events: auto;
+        }
+        .game-bg-canvas.dim { opacity: 0.5; }
+
+        .game-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-overlay.active { display: flex; }
+
+        .game-window {
+            width: 90%;
+            max-width: 600px;
+            background: linear-gradient(145deg, #0a0a0a 0%, #111 100%);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(201, 169, 98, 0.1);
+            animation: windowPop 0.4s ease;
+        }
+
+        @keyframes windowPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .game-header {
+            background: linear-gradient(90deg, rgba(201, 169, 98, 0.2) 0%, rgba(201, 169, 98, 0.05) 100%);
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(201, 169, 98, 0.2);
+        }
+
+        .game-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .game-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s;
+            line-height: 1;
+        }
+
+        .game-close:hover { opacity: 1; transform: rotate(90deg); }
+
+        .game-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .stat-box {
+            background: rgba(201, 169, 98, 0.1);
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            border-radius: 10px;
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        .client-card {
+            background: linear-gradient(135deg, rgba(201, 169, 98, 0.1) 0%, rgba(201, 169, 98, 0.05) 100%);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .client-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .client-industry {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .client-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .client-budget {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 15px;
+        }
+
+        .phase-list {
+            margin: 15px 0;
+        }
+
+        .phase {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .phase:hover { background: rgba(201, 169, 98, 0.1); }
+        .phase.active { border-color: var(--accent); background: rgba(201, 169, 98, 0.15); }
+        .phase.completed { border-color: var(--success); }
+        .phase.locked { opacity: 0.4; pointer-events: none; }
+
+        .phase-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(201, 169, 98, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .phase.completed .phase-icon { background: var(--success); }
+        .phase.active .phase-icon { background: var(--accent); animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 98, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(201, 169, 98, 0); } }
+
+        .phase-info { flex: 1; }
+        .phase-name { font-size: 0.85rem; font-weight: 500; }
+        .phase-desc { font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); }
+        .phase-status { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        .phase-action {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .phase-action:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(201, 169, 98, 0.5); }
+
+        .minigame {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .minigame-title {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .option-btns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option-btn {
+            background: rgba(201, 169, 98, 0.1);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            color: var(--text);
+            padding: 15px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover { background: rgba(201, 169, 98, 0.25); border-color: var(--accent); transform: translateY(-2px); }
+        .option-btn.correct { background: rgba(74, 222, 128, 0.2); border-color: var(--success); }
+        .option-btn.wrong { background: rgba(248, 113, 113, 0.2); border-color: var(--danger); }
+
+        .design-canvas {
+            width: 100%;
+            height: 150px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .design-shape {
+            position: absolute;
+            cursor: move;
+            transition: all 0.3s;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: rgba(201, 169, 98, 0.2);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(201, 169, 98, 0.5);
+        }
+
+        .progress-full {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(201, 169, 98, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .cta-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .cta-box p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(37, 211, 102, 0.5); }
+
+        /* Interactive Cards Section */
+        .interactive-section {
+            position: relative;
+            z-index: 15;
+            padding: 40px 20px 100px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cards-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.5s;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .action-card {
+            background: rgba(201, 169, 98, 0.08);
+            border: 1px solid rgba(201, 169, 98, 0.25);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .action-card:nth-child(1) { animation-delay: 1.8s; }
+        .action-card:nth-child(2) { animation-delay: 2s; }
+        .action-card:nth-child(3) { animation-delay: 2.2s; }
+        .action-card:nth-child(4) { animation-delay: 2.4s; }
+
+        .action-card:hover {
+            background: rgba(201, 169, 98, 0.15);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .action-card-title { font-size: 0.95rem; font-weight: 500; color: var(--accent); margin-bottom: 6px; }
+        .action-card-desc { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .todo-card, .form-card, .checklist-card, .contact-card { display: none; }
+        .todo-card.active, .form-card.active, .checklist-card.active, .contact-card.active { display: block; }
+
+        .todo-list { margin-top: 15px; }
+        .todo-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(201, 169, 98, 0.1); cursor: pointer; }
+        .todo-item:last-child { border-bottom: none; }
+        .todo-checkbox { width: 18px; height: 18px; border: 2px solid var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; }
+        .todo-item.checked .todo-checkbox { background: var(--accent); }
+        .todo-item.checked .todo-checkbox::after { content: '✓'; color: #000; font-size: 0.7rem; font-weight: bold; }
+        .todo-text { font-size: 0.8rem; color: rgba(255, 255, 255, 0.8); transition: all 0.3s; }
+        .todo-item.checked .todo-text { text-decoration: line-through; color: rgba(255, 255, 255, 0.4); }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.7rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(201, 169, 98, 0.3); border-radius: 6px; padding: 12px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.85rem; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .submit-btn { width: 100%; background: var(--accent); color: #000; border: none; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s; }
+        .submit-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(201, 169, 98, 0.4); }
+
+        .quest-option.selected { background: rgba(201, 169, 98, 0.3) !important; border-color: var(--accent) !important; box-shadow: 0 0 15px rgba(201, 169, 98, 0.3); }
+        
+        .quest-option { 
+            margin-bottom: 50px !important; 
+            display: block;
+            width: 100%;
+        }
+        
+        .quest-option:last-child {
+            margin-bottom: 20px !important;
+        }
+
+        .checklist-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(201, 169, 98, 0.1); cursor: pointer; transition: all 0.3s; }
+        .checklist-item:hover { padding-left: 5px; }
+        .checklist-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(201, 169, 98, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all 0.3s; }
+        .checklist-item.completed .checklist-icon { background: var(--success); }
+        .checklist-text { flex: 1; }
+        .checklist-title { font-size: 0.85rem; color: var(--text); }
+        .checklist-desc { font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); }
+
+        .contact-option { display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s; text-decoration: none; color: var(--text); }
+        .contact-option:hover { background: rgba(201, 169, 98, 0.15); transform: translateX(5px); }
+        .contact-option-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .contact-option-icon.whatsapp { background: #25D366; }
+        .contact-option-icon.email { background: #EA4335; }
+        .contact-option-icon.phone { background: var(--accent); }
+        .contact-option-text { flex: 1; }
+        .contact-option-title { font-size: 0.85rem; font-weight: 500; }
+        .contact-option-desc { font-size: 0.7rem; color: rgba(255, 255, 255, 0.5); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal { background: linear-gradient(145deg, #0a0a0a, #111); border: 1px solid rgba(201, 169, 98, 0.3); border-radius: 16px; padding: 30px; max-width: 400px; width: 90%; animation: windowPop 0.3s ease; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--accent); }
+        .modal-close { background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; opacity: 0.6; }
+        .modal-close:hover { opacity: 1; }
+
+        .game-ui-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .game-ui-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+            line-height: 1;
+        }
+
+        .game-ui-close:hover { opacity: 1; }
+
+        .game-ui-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .event-flash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 30px 50px;
+            text-align: center;
+            z-index: 100;
+            animation: flashIn 0.5s ease;
+            display: none;
+        }
+
+        .event-flash.show { display: block; }
+
+        @keyframes flashIn { from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+
+        .event-flash h2 { font-family: 'Playfair Display', serif; color: var(--accent); margin-bottom: 10px; }
+        .event-flash p { font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); }
+
+/* Bottom Action Bar */
+        .game-prompt-group {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 60%, transparent);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .game-prompt-group::-webkit-scrollbar {
+            display: none;
+        }
+
+        .game-prompt-group button {
+            background: rgba(201, 169, 98, 0.15);
+            border: 1px solid rgba(201, 169, 98, 0.4);
+            color: var(--accent);
+            padding: 14px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            flex: 1;
+            text-align: center;
+            max-width: 150px;
+        }
+
+        .game-prompt-group button:hover { 
+            background: rgba(201, 169, 98, 0.3); 
+            transform: translateY(-2px); 
+        }
+
+        @media (max-width: 768px) {
+            .game-prompt-group {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .game-prompt-group button {
+                flex: 0 1 calc(50% - 10px);
+                max-width: none;
+            }
+        }
+
+        .game-prompt-group::-webkit-scrollbar {
+            display: none;
+        }
+
+        .game-prompt-group a,
+        .game-prompt-group .mini-card,
+        .game-prompt-group #gamePrompt {
+            background: rgba(201, 169, 98, 0.15);
+            border: 1px solid rgba(201, 169, 98, 0.4);
+            color: var(--accent);
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-align: center;
+            min-width: 85px;
+        }
+
+        .mini-card {
+            background: rgba(201, 169, 98, 0.12);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+        }
+
+        .game-prompt-group a:hover,
+        .game-prompt-group .mini-card:hover,
+        .game-prompt-group #gamePrompt:hover { 
+            background: rgba(201, 169, 98, 0.3); 
+            transform: translateY(-2px); 
+        }
+
+        .game-click-prompt {
+            background: rgba(201, 169, 98, 0.15);
+            border: 1px solid rgba(201, 169, 98, 0.4);
+            color: var(--accent);
+            padding: 12px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .game-click-prompt:hover { background: rgba(201, 169, 98, 0.3); transform: scale(1.05); }
+
+        .action-cards-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mini-card {
+            background: rgba(201, 169, 98, 0.12);
+            border: 1px solid rgba(201, 169, 98, 0.3);
+            padding: 12px 16px;
+            font-size: 0.65rem;
+        }
+
+        .mini-card:hover {
+            background: rgba(201, 169, 98, 0.25);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .choice-card {
+            background: rgba(201, 169, 98, 0.08);
+            border: 1px solid rgba(201, 169, 98, 0.2);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .choice-card:hover { background: rgba(201, 169, 98, 0.15); border-color: var(--accent); transform: translateX(5px); }
+        .choice-card.selected { border-color: var(--accent); background: rgba(201, 169, 98, 0.2); }
+        .choice-card h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: 5px; }
+        .choice-card p { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); }
+
+        .result-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .result-overlay.success { border: 2px solid var(--success); }
+        .result-overlay.fail { border: 2px solid var(--danger); }
+
+        .result-overlay h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .result-overlay.success h3 { color: var(--success); }
+        .result-overlay.fail h3 { color: var(--danger); }
+        .result-overlay p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); }
+    </style>
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    <div class="floating-elements">
+        <div class="element element-1"></div>
+        <div class="element element-2"></div>
+        <div class="element element-3"></div>
+        <div class="element element-4"></div>
+    </div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="logo">The Revieree <span>Studios</span></div>
+        <h1 class="main-text">We are rebuilding the website.<br>Transition in progress.</h1>
+        <p class="sub-text">Something extraordinary is taking shape</p>
+        <div class="loader-container">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-center"></div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">✅ Sent!</span>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 15px;">We'll get back to you within 24 hours!</p>
+            <a href="https://wa.me/9156472904" class="whatsapp-btn" style="display: block; text-align: center; text-decoration: none;" target="_blank">
+                💬 Continue on WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- Game Canvas - Disabled for now -->
+    <!-- <canvas id="gameCanvas" class="game-bg-canvas dim"></canvas> -->
+    
+    <!-- Bottom Action Bar -->
+    <div class="game-prompt-group">
+        <button onclick="showLeadModal('WhatsApp')">WhatsApp</button>
+        <button onclick="showLeadModal('Email')">Email</button>
+        <button onclick="showLeadModal('Checklist')">Checklist</button>
+        <button onclick="showLeadModal('Requirements Quiz')">Requirements</button>
+        <button onclick="showLeadModal('Get Quote')">Get Quote</button>
+        <button onclick="showLeadModal('Play Game')">Play Game</button>
+    </div>
+
+    <!-- Lead Capture Modal -->
+    <div class="game-overlay" id="leadModal">
+        <div class="game-window" style="max-width: 400px;">
+            <div class="game-header">
+                <span class="game-ui-title">Before you go... 📝</span>
+                <button class="game-ui-close" onclick="closeLeadModal()">×</button>
+            </div>
+            <div class="game-ui-body">
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 20px; text-align: center;">
+                    Just leave your contact so we can follow up with you!
+                </p>
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" id="leadName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="leadEmail" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone (optional)</label>
+                    <input type="tel" id="leadPhone" placeholder="+91 9876543210">
+                </div>
+                <input type="hidden" id="leadAction" value="">
+                <button onclick="submitLead()" class="submit-btn">Continue →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checklist Card Overlay -->
+    <div class="game-overlay" id="checklistOverlay">
+        <div class="game-window">
+            <div class="game-header">
+                <span class="game-ui-title">📋 My Checklist</span>
+                <button class="game-ui-close" onclick="closeCard('checklist')">×</button>
+            </div>
+            <div class="game-ui-body">
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="newTaskInput" placeholder="Add new task..." style="width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(201,169,98,0.3);border-radius:6px;padding:12px;color:#fff;font-size:0.85rem;">
+                </div>
+                <button onclick="addTask()" style="width:100%;background:var(--accent);color:#000;border:none;padding:10px;border-radius:6px;font-weight:600;cursor:pointer;margin-bottom:15px;">+ Add Task</button>
+                <div id="taskList"></div>
+                <div style="margin-top:15px;padding-top:15px;border-top:1px solid rgba(201,169,98,0.2);text-align:center;">
+                    <span style="font-size:0.75rem;color:rgba(255,255,255,0.5)">Progress: </span>
+                    <span id="taskProgress" style="color:var(--accent);font-weight:600;">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requirements Questionnaire Overlay - Step by Step -->
+    <div class="game-overlay" id="requirementsOverlay">
+        <div class="game-window">
+            <div class="game-header">
+                <span class="game-ui-title">📝 Find Your Perfect Service</span>
+                <button class="game-ui-close" onclick="closeRequirements()">×</button>
+            </div>
+            <div class="game-ui-body" id="questionnaireBody">
+                <!-- Dynamic questionnaire content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Request Overlay -->
+    <div class="game-overlay" id="quoteOverlay">
+        <div class="game-window">
+            <div class="game-header">
+                <span class="game-ui-title">💰 Get a Quote</span>
+                <button class="game-ui-close" onclick="closeCard('quote')">×</button>
+            </div>
+            <div class="game-ui-body">
+                <p style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:15px;">Tell us briefly what you need and we'll get back with a quote!</p>
+                <div class="form-group">
+                    <label>What do you need?</label>
+                    <textarea id="quoteInput" placeholder="e.g. I need a website for my cafe..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Your Budget</label>
+                    <select id="quoteBudget">
+                        <option>Under ₹50,000</option>
+                        <option>₹50,000 - ₹1,00,000</option>
+                        <option>₹1,00,000 - ₹3,00,000</option>
+                        <option>₹3,00,000+</option>
+                    </select>
+                </div>
+                <button onclick="sendQuoteRequest()" class="submit-btn">Send to WhatsApp →</button>
+                <button onclick="sendQuoteEmail()" class="submit-btn" style="margin-top:10px;background:transparent;border:1px solid var(--accent);color:var(--accent)">Send via Email →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-overlay" id="gameOverlay">
+        <div class="game-window">
+            <div class="game-header">
+                <span class="game-title">🎯 Client Project Simulator</span>
+                <button class="game-close" onclick="closeGame()">×</button>
+            </div>
+            <div class="game-body" id="gameBody">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <div class="event-flash" id="eventFlash">
+        <h2 id="eventTitle">New Client!</h2>
+        <p id="eventDesc">A new project just landed</p>
+    </div>
+
+    <script>
+        const game = {
+            money: 2500,
+            reputation: 15,
+            currentClient: null,
+            currentPhase: 0,
+            choices: {}
+        };
+
+        const clients = [
+            {
+                name: "Apex Tech Solutions",
+                industry: "Technology / SaaS",
+                budget: 8500,
+                desc: "We're a growing B2B SaaS company looking for a complete brand identity. Modern, professional, but not boring. Need logo, color palette, and brand guidelines.",
+                phases: [
+                    { name: "Discovery Call", desc: "Understand their vision", icon: "📞", type: "quiz",
+                      question: "The client says their main competitor is 'too corporate'. What's your response?",
+                      options: [
+                        { text: "That's exactly why we're different - we bring personality", correct: true },
+                        { text: "I'll research their competitor and get back to you", correct: false },
+                        { text: "Corporate is good for enterprise sales", correct: false }
+                      ]
+                    },
+                    { name: "Create Moodboard", desc: "Visual direction", icon: "🎨", type: "moodboard",
+                      question: "They want something 'bold but elegant'. Choose the right combination:",
+                      options: [
+                        { text: "Bold fonts + Pastel colors", correct: false },
+                        { text: "Clean sans-serif + Dark accent", correct: true },
+                        { text: "Script fonts + Neon colors", correct: false }
+                      ]
+                    },
+                    { name: "Logo Concepts", desc: "3 initial designs", icon: "✏️", type: "design",
+                      question: "Create your first concept. What's the core symbol?",
+                      options: [
+                        { text: "Abstract geometric shape - timeless", correct: true },
+                        { text: "Letter mark with their initial", correct: false },
+                        { text: " mascot character", correct: false }
+                      ]
+                    },
+                    { name: "Presentation", desc: "Present to stakeholders", icon: "🎤", type: "pitch",
+                      question: "In your presentation, the CEO challenges your pricing. What's your approach?",
+                      options: [
+                        { text: "Walk through value, show ROI", correct: true },
+                        { text: "Immediately offer discount", correct: false },
+                        { text: "Explain our process justifies cost", correct: false }
+                      ]
+                    }
+                ]
+            },
+            {
+                name: "Bloom Botanicals",
+                industry: "Wellness / Beauty",
+                budget: 4500,
+                desc: "Organic skincare brand targeting millennials. Need earthy, natural aesthetic that feels luxurious. Packaging is key for us.",
+                phases: [
+                    { name: "Discovery Call", desc: "Learn their story", icon: "📞", type: "quiz",
+                      question: "They mention sustainability is important. What's your first question?",
+                      options: [
+                        { text: "What eco-initiatives do you already have?", correct: true },
+                        { text: "How much can you spend on packaging?", correct: false },
+                        { text: "What's your favorite skincare product?", correct: false }
+                      ]
+                    },
+                    { name: "Color Palette", desc: "Define the palette", icon: "🎨", type: "moodboard",
+                      question: "Choose colors that convey 'organic luxury':",
+                      options: [
+                        { text: "Forest green, cream, gold accents", correct: true },
+                        { text: "Hot pink, black, white", correct: false },
+                        { text: "Neon green, black, chrome", correct: false }
+                      ]
+                    },
+                    { name: "Packaging Concept", desc: "Design the box", icon: "📦", type: "design",
+                      question: "The packaging should feel:",
+                      options: [
+                        { text: "Unboxing experience - memorable", correct: true },
+                        { text: "Minimal - let product speak", correct: false },
+                        { text: "Maximal - stand out on shelf", correct: false }
+                      ]
+                    },
+                    { name: "Delivery", desc: "Final handoff", icon: "✨", type: "pitch",
+                      question: "Client loves it but asks for 'one small change'. What's your policy?",
+                      options: [
+                        { text: "2 rounds of revisions included", correct: true },
+                        { text: "Sure, no problem (unlimited)", correct: false },
+                        { text: "That'll be extra $500", correct: false }
+                      ]
+                    }
+                ]
+            },
+            {
+                name: "IronHeart Fitness",
+                industry: "Health / Fitness",
+                budget: 12000,
+                desc: "Premium gym chain expanding nationwide. Need comprehensive brand system - from signage to app UI. High energy, motivational.",
+                phases: [
+                    { name: "Strategy Session", desc: "Define positioning", icon: "🎯", type: "quiz",
+                      question: "Their USP is 'no judgment gym'. How do you position this?",
+                      options: [
+                        { text: "Welcome to all fitness levels", correct: true },
+                        { text: "Hardcore only - serious lifters", correct: false },
+                        { text: "Cheapest gym in town", correct: false }
+                      ]
+                    },
+                    { name: "Brand Architecture", desc: "System design", icon: "🏗️", type: "moodboard",
+                      question: "For a national chain, the brand needs:",
+                      options: [
+                        { text: "Consistent guidelines, flexible applications", correct: true },
+                        { text: "One design repeated everywhere", correct: false },
+                        { text: "Different look for each location", correct: false }
+                      ]
+                    },
+                    { name: "Digital Assets", desc: "App & Website", icon: "📱", type: "design",
+                      question: "The app needs to feel:",
+                      options: [
+                        { text: "Intuitive and motivating", correct: true },
+                        { text: "Information-heavy", correct: false },
+                        { text: "Gaming-focused", correct: false }
+                      ]
+                    },
+                    { name: "Rollout", desc: "Launch plan", icon: "🚀", type: "pitch",
+                      question: "Timeline is tight - 4 weeks. Your approach?",
+                      options: [
+                        { text: "Phased delivery with milestones", correct: true },
+                        { text: "Rush order - extra fees", correct: false },
+                        { text: "Impossible - decline project", correct: false }
+                      ]
+                    }
+                ]
+            }
+        ];
+
+        function showEvent(title, desc) {
+            document.getElementById('eventTitle').textContent = title;
+            document.getElementById('eventDesc').textContent = desc;
+            const flash = document.getElementById('eventFlash');
+            flash.classList.add('show');
+            setTimeout(() => flash.classList.remove('show'), 2500);
+        }
+
+        function openGame() {
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                canvas.classList.add('active');
+                canvas.classList.remove('dim');
+            }
+            document.getElementById('gameOverlay').classList.add('active');
+            const prompt = document.getElementById('gamePrompt');
+            if (prompt) prompt.classList.add('hidden');
+            document.querySelector('.container').style.opacity = '0.15';
+            document.querySelector('.floating-elements').style.opacity = '0.1';
+            
+            game.money = 2500;
+            game.reputation = 15;
+            game.currentClient = null;
+            game.currentPhase = 0;
+            game.choices = {};
+            
+            showEvent('Welcome!', 'Handle client projects like a pro');
+            showClientSelect();
+        }
+
+        function closeGame() {
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                canvas.classList.remove('active');
+                canvas.classList.add('dim');
+            }
+            document.getElementById('gameOverlay').classList.remove('active');
+            const prompt = document.getElementById('gamePrompt');
+            if (prompt) prompt.classList.remove('hidden');
+            document.querySelector('.container').style.opacity = '1';
+            document.querySelector('.floating-elements').style.opacity = '1';
+        }
+
+        function showClientSelect() {
+            const body = document.getElementById('gameBody');
+            let html = `
+                <div class="game-stats">
+                    <div class="stat-box"><div class="stat-value">$${game.money}</div><div class="stat-label">Earned</div></div>
+                    <div class="stat-box"><div class="stat-value">${game.reputation}</div><div class="stat-label">Reputation</div></div>
+                </div>
+                <h3 style="text-align:center;margin-bottom:20px;color:var(--accent);font-family:'Playfair Display',serif;">Select a Client Project</h3>
+            `;
+            
+            clients.forEach((client, i) => {
+                html += `
+                    <div class="client-card" onclick="startProject(${i})" style="cursor:pointer">
+                        <div class="client-name">${client.name}</div>
+                        <div class="client-industry">${client.industry}</div>
+                        <div class="client-desc">${client.desc}</div>
+                        <div class="client-budget">$${client.budget.toLocaleString()}</div>
+                        <div class="phase-action" style="text-align:center">Start Project</div>
+                    </div>
+                `;
+            });
+            
+            body.innerHTML = html;
+        }
+
+        function startProject(index) {
+            game.currentClient = clients[index];
+            game.currentPhase = 0;
+            showPhase();
+        }
+
+        function showPhase() {
+            const client = game.currentClient;
+            const phase = client.phases[game.currentPhase];
+            const body = document.getElementById('gameBody');
+            
+            const progress = ((game.currentPhase) / client.phases.length) * 100;
+            
+            let html = `
+                <div class="client-card" style="margin-bottom:15px">
+                    <div class="client-name">${client.name}</div>
+                    <div class="client-industry">${client.industry}</div>
+                    <div class="progress-full"><div class="progress-fill" style="width:${progress}%"></div></div>
+                    <div style="font-size:0.75rem;color:var(--accent)">Phase ${game.currentPhase + 1} of ${client.phases.length}: ${phase.name}</div>
+                </div>
+                
+                <div class="minigame">
+                    <div class="minigame-title">${phase.icon} ${phase.desc}</div>
+                    <p style="font-size:0.9rem;color:rgba(255,255,255,0.8);margin:15px 0">${phase.question}</p>
+                    
+                    <div class="option-btns">
+                        ${phase.options.map((opt, i) => `
+                            <button class="option-btn" onclick="makeChoice(${i})" id="opt${i}">${opt.text}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            body.innerHTML = html;
+        }
+
+        function makeChoice(optIndex) {
+            const phase = game.currentClient.phases[game.currentPhase];
+            const choice = phase.options[optIndex];
+            const btns = document.querySelectorAll('.option-btn');
+            
+            btns.forEach(btn => btn.disabled = true);
+            
+            if (choice.correct) {
+                document.getElementById(`opt${optIndex}`).classList.add('correct');
+                game.reputation += 5;
+                game.money += Math.floor(game.currentClient.budget / 8);
+                
+                setTimeout(() => {
+                    game.currentPhase++;
+                    if (game.currentPhase >= game.currentClient.phases.length) {
+                        showCompletion();
+                    } else {
+                        showPhase();
+                    }
+                }, 1200);
+            } else {
+                document.getElementById(`opt${optIndex}`).classList.add('wrong');
+                game.reputation = Math.max(1, game.reputation - 3);
+                
+                // Show correct answer
+                phase.options.forEach((opt, i) => {
+                    if (opt.correct) document.getElementById(`opt${i}`).classList.add('correct');
+                });
+                
+                setTimeout(() => {
+                    game.currentPhase++;
+                    if (game.currentPhase >= game.currentClient.phases.length) {
+                        showCompletion();
+                    } else {
+                        showPhase();
+                    }
+                }, 1500);
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            document.querySelector('.stat-value').textContent = '$' + game.money;
+            document.querySelectorAll('.stat-value')[1].textContent = game.reputation;
+        }
+
+        function showCompletion() {
+            const client = game.currentClient;
+            const body = document.getElementById('gameBody');
+            
+            const rating = game.reputation >= 30 ? 5 : game.reputation >= 20 ? 4 : 3;
+            
+            let html = `
+                <div class="client-card" style="text-align:center;padding:30px">
+                    <div style="font-size:3rem;margin-bottom:15px">${rating} ⭐</div>
+                    <div class="client-name" style="font-size:1.4rem">Project Complete!</div>
+                    <div class="client-budget" style="margin:20px 0">$${game.money.toLocaleString()}</div>
+                    <p style="color:rgba(255,255,255,0.6);margin-bottom:20px">Reputation: ${game.reputation}</p>
+                    
+                    <button class="phase-action" onclick="showClientSelect()" style="margin:0 auto">Next Project</button>
+                </div>
+                
+                <div class="cta-box">
+                    <h3>Want Real Clients?</h3>
+                    <p>This was just a simulation. Get real projects with real budgets!</p>
+                    <a href="https://wa.me/9156472904" class="whatsapp-btn" target="_blank">
+                        💬 Chat on WhatsApp
+                    </a>
+                    <p style="margin-top:12px;font-size:0.75rem;color:rgba(255,255,255,0.5)">Or email us to start</p>
+                </div>
+            `;
+            
+            body.innerHTML = html;
+            showEvent('Congratulations!', 'Project delivered successfully');
+        }
+
+        // Background Animation - Disabled (canvas removed)
+        /*
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let stars = [];
+        for (let i = 0; i < 50; i++) {
+            stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: 0.5 + Math.random() });
+        }
+        
+        function gameLoop() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.y += s.speed;
+                if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+                ctx.fillStyle = 'rgba(201, 169, 98, 0.5)';
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
+        */
+
+        // Event Listeners - Game disabled (no canvas element)
+        const gamePromptEl = document.getElementById('gamePrompt');
+        if (gamePromptEl) {
+            gamePromptEl.addEventListener('click', openGame);
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGame(); });
+
+        // Particles
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 8 + 's';
+            p.style.animationDuration = (6 + Math.random() * 4) + 's';
+            container.appendChild(p);
+        }
+
+        // Card Functions
+        let tasks = JSON.parse(localStorage.getItem('TRS_todos')) || [];
+
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            if (tasks.length === 0) {
+                list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.4);font-size:0.8rem;padding:20px;">No tasks yet. Add one above!</p>';
+            } else {
+                list.innerHTML = tasks.map((t, i) => `
+                    <div class="todo-item ${t.done ? 'checked' : ''}" onclick="toggleTask(${i})">
+                        <div class="todo-checkbox"></div>
+                        <div class="todo-text">${t.text}</div>
+                        <button onclick="deleteTask(${i},event)" style="background:none;border:none;color:var(--danger);cursor:pointer;margin-left:auto;">×</button>
+                    </div>
+                `).join('');
+            }
+            updateProgress();
+        }
+
+        function addTask() {
+            const input = document.getElementById('newTaskInput');
+            if (input.value.trim()) {
+                const newTask = input.value.trim();
+                tasks.push({ text: newTask, done: false });
+                localStorage.setItem('TRS_todos', JSON.stringify(tasks));
+                
+                // Track to Google Sheets
+                saveToSheet({
+                    name: 'Checklist User',
+                    company: 'Task Added',
+                    projectType: newTask,
+                    goal: 'Checklist',
+                    budget: '',
+                    timeline: '',
+                    details: 'New task added to checklist'
+                });
+                
+                input.value = '';
+                renderTasks();
+            }
+        }
+
+        function toggleTask(i) {
+            const wasDone = tasks[i].done;
+            tasks[i].done = !tasks[i].done;
+            localStorage.setItem('TRS_todos', JSON.stringify(tasks));
+            
+            // Track to Google Sheets
+            saveToSheet({
+                name: 'Checklist User',
+                company: wasDone ? 'Task Unchecked' : 'Task Completed',
+                projectType: tasks[i].text,
+                goal: 'Checklist',
+                budget: '',
+                timeline: '',
+                details: wasDone ? 'Task marked as incomplete' : 'Task completed!'
+            });
+            
+            renderTasks();
+        }
+
+        function deleteTask(i, e) {
+            e.stopPropagation();
+            const deletedTask = tasks[i].text;
+            tasks.splice(i, 1);
+            localStorage.setItem('TRS_todos', JSON.stringify(tasks));
+            
+            // Track to Google Sheets
+            saveToSheet({
+                name: 'Checklist User',
+                company: 'Task Deleted',
+                projectType: deletedTask,
+                goal: 'Checklist',
+                budget: '',
+                timeline: '',
+                details: 'Task removed from checklist'
+            });
+            
+            renderTasks();
+        }
+
+        function updateProgress() {
+            if (tasks.length === 0) {
+                document.getElementById('taskProgress').textContent = '0%';
+                return;
+            }
+            const done = tasks.filter(t => t.done).length;
+            const percent = Math.round((done / tasks.length) * 100);
+            document.getElementById('taskProgress').textContent = percent + '%';
+        }
+
+        function closeCard(cardId) {
+            if (cardId === 'checklist') {
+                document.getElementById('checklistOverlay').classList.remove('active');
+            } else if (cardId === 'requirements') {
+                document.getElementById('requirementsOverlay').classList.remove('active');
+            } else if (cardId === 'quote') {
+                document.getElementById('quoteOverlay').classList.remove('active');
+            }
+        }
+
+        function submitRequirements(e) {
+            e.preventDefault();
+            const form = document.getElementById('requirementsForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            const msg = `Hi! I want to discuss my project requirements:\n\nName: ${data.name}\nCompany: ${data.company}\nProject Type: ${data.projectType}\nGoal: ${data.goal}\nAudience: ${data.audience}\nBudget: ${data.budget}\nTimeline: ${data.timeline}\nDetails: ${data.details}`;
+            
+            window.open(`https://wa.me/9156472904?text=${encodeURIComponent(msg)}`, '_blank');
+            document.getElementById('requirementsOverlay').classList.remove('active');
+            form.reset();
+        }
+
+        function sendQuoteRequest() {
+            const requirement = document.getElementById('quoteInput').value;
+            const budget = document.getElementById('quoteBudget').value;
+            
+            if (!requirement.trim()) {
+                alert('Please tell us what you need!');
+                return;
+            }
+            
+            // Save to Google Sheets
+            saveToSheet({
+                name: 'Quote Request',
+                company: '',
+                projectType: 'Quote Request',
+                goal: requirement,
+                budget: budget,
+                timeline: '',
+                details: 'Quick quote from website'
+            });
+            
+            const msg = `Hi! I need a quote for: ${requirement}\nMy Budget: ${budget}`;
+            window.open(`https://wa.me/9156472904?text=${encodeURIComponent(msg)}`, '_blank');
+            document.getElementById('quoteOverlay').classList.remove('active');
+            document.getElementById('quoteInput').value = '';
+        }
+
+        function sendQuoteEmail() {
+            const requirement = document.getElementById('quoteInput').value;
+            const budget = document.getElementById('quoteBudget').value;
+            
+            if (!requirement.trim()) {
+                alert('Please tell us what you need!');
+                return;
+            }
+            
+            // Save to Google Sheets
+            saveToSheet({
+                name: 'Quote Request',
+                company: '',
+                projectType: 'Quote Request',
+                goal: requirement,
+                budget: budget,
+                timeline: '',
+                details: 'Quote request via email'
+            });
+            
+            const subject = 'Quote Request from Website';
+            const bodyText = `Hi,\n\nI need a quote for: ${requirement}\nMy Budget: ${budget}\n\nPlease get back to me.\n\nThanks!`;
+            
+            window.location.href = `mailto:sangeeta@thereviereestudios.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+            document.getElementById('quoteOverlay').classList.remove('active');
+            document.getElementById('quoteInput').value = '';
+        }
+
+        // Questionnaire System
+        const questionnaire = {
+            currentStep: 0,
+            answers: {},
+            steps: [
+                {
+                    question: "What do you need help with?",
+                    key: 'service',
+                    options: [
+                        { text: "A new website", value: 'website', icon: '🌐' },
+                        { text: "Brand identity / Logo", value: 'brand', icon: '🎨' },
+                        { text: "Both website & branding", value: 'fullbrand', icon: '✨' },
+                        { text: "E-commerce / Online store", value: 'ecommerce', icon: '🛒' },
+                        { text: "Social media / Content", value: 'social', icon: '📱' }
+                    ]
+                },
+                {
+                    question: "What's your main goal?",
+                    key: 'goal',
+                    options: [
+                        { text: "Launch a new business", value: 'launch' },
+                        { text: "Redesign existing brand", value: 'redesign' },
+                        { text: "Get more customers", value: 'customers' },
+                        { text: "Build credibility", value: 'credibility' }
+                    ]
+                },
+                {
+                    question: "What's your timeline?",
+                    key: 'timeline',
+                    options: [
+                        { text: "ASAP (Urgent)", value: 'urgent' },
+                        { text: "Within 1 month", value: '1month' },
+                        { text: "2-3 months", value: '3months' },
+                        { text: "Just researching", value: 'research' }
+                    ]
+                },
+                {
+                    question: "What's your budget?",
+                    key: 'budget',
+                    options: [
+                        { text: "Under ₹50,000", value: 'low' },
+                        { text: "₹50,000 - ₹1,50,000", value: 'medium' },
+                        { text: "₹1,50,000 - ₹5,00,000", value: 'high' },
+                        { text: "₹5,00,000+", value: 'premium' }
+                    ]
+                }
+            ],
+            
+            render() {
+                const body = document.getElementById('questionnaireBody');
+                const step = this.steps[this.currentStep];
+                const progress = ((this.currentStep) / this.steps.length) * 100;
+                
+                let html = `
+                    <div class="progress-full" style="margin-bottom:20px">
+                        <div class="progress-fill" style="width:${progress}%"></div>
+                    </div>
+                    <p style="text-align:center;color:rgba(255,255,255,0.5);font-size:0.7rem;margin-bottom:10px;">Question ${this.currentStep + 1} of ${this.steps.length}</p>
+                    <h3 style="text-align:center;font-size:1.1rem;margin-bottom:25px;color:var(--accent)">${step.question}</h3>
+                `;
+                
+                step.options.forEach((opt, i) => {
+                    const isSelected = this.answers[step.key] === opt.value;
+                    html += `
+                        <div class="quest-option ${isSelected ? 'selected' : ''}" onclick="questionnaire.selectOption('${step.key}', '${opt.value}')" style="background:rgba(201,169,98,0.1);border:1px solid rgba(201,169,98,0.2);border-radius:10px;padding:20px;cursor:pointer;transition:all 0.3s" onmouseover="this.style.background='rgba(201,169,98,0.2)'" onmouseout="this.style.background='rgba(201,169,98,0.1)'">
+                            <div style="display:flex;align-items:center;gap:12px">
+                                ${opt.icon ? `<span style="font-size:1.3rem">${opt.icon}</span>` : ''}
+                                <span style="font-size:0.9rem">${opt.text}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <div style="display:flex;gap:10px;margin-top:25px">
+                        ${this.currentStep > 0 ? `<button onclick="questionnaire.prev()" style="flex:1;padding:12px;background:transparent;border:1px solid rgba(201,169,98,0.4);color:var(--text);border-radius:6px;cursor:pointer">← Back</button>` : '<div style="flex:1"></div>'}
+                        ${this.currentStep < this.steps.length - 1 ? 
+                            `<button onclick="questionnaire.next()" style="flex:1;padding:12px;background:var(--accent);border:none;color:#000;border-radius:6px;font-weight:600;cursor:pointer" id="nextBtn" disabled>Next →</button>` : 
+                            `<button onclick="questionnaire.finish()" style="flex:1;padding:12px;background:var(--accent);border:none;color:#000;border-radius:6px;font-weight:600;cursor:pointer" id="nextBtn">See Result →</button>`}
+                    </div>
+                `;
+                
+                body.innerHTML = html;
+                
+                // Enable/disable next button based on selection
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn) nextBtn.disabled = !this.answers[step.key];
+            },
+            
+            selectOption(key, value) {
+                this.answers[key] = value;
+                this.render();
+            },
+            
+            next() {
+                if (this.currentStep < this.steps.length - 1) {
+                    this.currentStep++;
+                    this.render();
+                }
+            },
+            
+            prev() {
+                if (this.currentStep > 0) {
+                    this.currentStep--;
+                    this.render();
+                }
+            },
+            
+            finish() {
+                const body = document.getElementById('questionnaireBody');
+                const a = this.answers;
+                let recommendation = '';
+                let description = '';
+                
+                // Save to Google Sheets
+                saveQuestionnaireResult(a, recommendation);
+                
+                // Determine recommendation based on answers
+                if (a.service === 'website') {
+                    if (a.budget === 'low') {
+                        recommendation = 'Landing Page Package';
+                        description = 'A single, powerful page to capture leads and showcase your business.';
+                    } else {
+                        recommendation = 'Professional Website';
+                        description = 'A multi-page website to establish your online presence.';
+                    }
+                } else if (a.service === 'brand') {
+                    recommendation = 'Brand Identity Package';
+                    description = 'Logo, color palette, typography, and brand guidelines.';
+                } else if (a.service === 'fullbrand') {
+                    recommendation = 'Complete Brand Package';
+                    description = 'Full branding + website for a cohesive brand presence.';
+                } else if (a.service === 'ecommerce') {
+                    recommendation = 'E-commerce Solution';
+                    description = 'Online store with product management and payment integration.';
+                } else if (a.service === 'social') {
+                    recommendation = 'Social Media Package';
+                    description = 'Content strategy, graphics, and social media management.';
+                } else {
+                    recommendation = 'Custom Package';
+                    description = 'Let\'s discuss your unique requirements.';
+                }
+                
+                // Save again with recommendation
+                saveQuestionnaireResult(a, recommendation);
+                
+                const summary = `Service: ${a.service}\nGoal: ${a.goal}\nTimeline: ${a.timeline}\nBudget: ${a.budget}`;
+                
+                body.innerHTML = `
+                    <div style="text-align:center;padding:20px">
+                        <div style="font-size:3rem;margin-bottom:15px">🎯</div>
+                        <h3 style="color:var(--accent);font-size:1.3rem;margin-bottom:10px">We Recommend:</h3>
+                        <div style="background:rgba(201,169,98,0.2);border:1px solid var(--accent);border-radius:12px;padding:20px;margin:20px 0">
+                            <h2 style="color:var(--accent);font-size:1.4rem;margin-bottom:10px">${recommendation}</h2>
+                            <p style="color:rgba(255,255,255,0.7);font-size:0.9rem">${description}</p>
+                        </div>
+                        <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-bottom:20px">Based on your answers, this service matches your needs best.</p>
+                        
+                        <div style="display:flex;flex-direction:column;gap:10px">
+                            <a href="https://wa.me/9156472904?text=${encodeURIComponent('Hi! I took the quiz and I\'m interested in: ' + recommendation + '. ' + summary)}" onclick="saveQuestionnaireResult(questionnaire.answers, '${recommendation}')" class="submit-btn" style="display:block;text-decoration:none;padding:14px;background:#25D366;color:#fff;text-align:center;border-radius:6px;font-weight:600">💬 Chat on WhatsApp</a>
+                            <a href="mailto:sangeeta@thereviereestudios.in?subject=${encodeURIComponent('Interested in: ' + recommendation)}&body=${encodeURIComponent(summary)}" class="submit-btn" style="display:block;text-decoration:none;padding:14px;background:transparent;border:1px solid var(--accent);color:var(--accent);text-align:center;border-radius:6px;font-weight:600">✉️ Send Email</a>
+                            <button onclick="document.getElementById('quoteOverlay').classList.add('active')" class="submit-btn" style="background:rgba(201,169,98,0.2);color:var(--text)">💰 Get a Quote</button>
+                            <button onclick="questionnaire.restart()" style="background:none;border:none;color:rgba(255,255,255,0.5);padding:10px;cursor:pointer;font-size:0.8rem">↺ Start Over</button>
+                        </div>
+                    </div>
+                `;
+            },
+            
+            restart() {
+                this.currentStep = 0;
+                this.answers = {};
+                this.render();
+            }
+        };
+
+        function closeRequirements() {
+            document.getElementById('requirementsOverlay').classList.remove('active');
+            questionnaire.restart();
+        }
+
+        // Local Storage + Google Sheets Data Collection
+        const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwqTD67ugboxzL5PPt216Jae9EhjdBXPU3pe6nqpY4TUA_9-q1DoBcFL5cF0eHGUQAi/exec';
+        
+        function saveData(data) {
+            // Save to localStorage
+            let allData = JSON.parse(localStorage.getItem('TRS_leads') || '[]');
+            allData.push({...data, timestamp: new Date().toISOString()});
+            localStorage.setItem('TRS_leads', JSON.stringify(allData));
+            console.log('Data saved locally:', data);
+            
+            // Send to Google Sheets
+            fetch(SHEET_URL + '?name=' + encodeURIComponent(data.name || '') + 
+                  '&company=' + encodeURIComponent(data.company || '') + 
+                  '&projectType=' + encodeURIComponent(data.projectType || '') + 
+                  '&goal=' + encodeURIComponent(data.goal || '') + 
+                  '&budget=' + encodeURIComponent(data.budget || '') + 
+                  '&timeline=' + encodeURIComponent(data.timeline || '') + 
+                  '&details=' + encodeURIComponent(data.details || ''), 
+                  { mode: 'no-cors' })
+                .catch(err => console.log('Sheet error:', err));
+        }
+
+        // Function to view/export data (for admin only - type in console)
+        function viewAdminData() {
+            const allData = JSON.parse(localStorage.getItem('TRS_leads') || '[]');
+            console.table(allData);
+            return allData;
+        }
+
+        // Replace saveToSheet to use localStorage
+        function saveToSheet(data) {
+            saveData(data);
+        }
+
+        function trackClick(action) {
+            saveToSheet({
+                name: 'Website Visitor',
+                company: '',
+                projectType: action,
+                goal: 'Click Tracking',
+                budget: '',
+                timeline: '',
+                details: action + ' - ' + new Date().toLocaleString()
+            });
+        }
+
+        function saveQuestionnaireResult(answers, recommendation) {
+            const serviceNames = {
+                'website': 'Website Design',
+                'brand': 'Brand Identity',
+                'fullbrand': 'Full Brand Package',
+                'ecommerce': 'E-commerce',
+                'social': 'Social Media'
+            };
+            const goalNames = {
+                'launch': 'Launch new business',
+                'redesign': 'Redesign existing',
+                'customers': 'Get more customers',
+                'credibility': 'Build credibility'
+            };
+            const timelineNames = {
+                'urgent': 'ASAP',
+                '1month': '1 month',
+                '3months': '2-3 months',
+                'research': 'Just researching'
+            };
+            const budgetNames = {
+                'low': 'Under ₹50,000',
+                'medium': '₹50,000 - ₹1,50,000',
+                'high': '₹1,50,000 - ₹5,00,000',
+                'premium': '₹5,00,000+'
+            };
+            
+            saveToSheet({
+                name: 'Quiz Completed',
+                company: serviceNames[answers.service] || answers.service,
+                projectType: recommendation,
+                goal: goalNames[answers.goal] || answers.goal,
+                budget: budgetNames[answers.budget] || answers.budget,
+                timeline: timelineNames[answers.timeline] || answers.timeline,
+                details: 'Quiz from website - ' + new Date().toLocaleDateString()
+            });
+        }
+
+        function saveChecklistData() {
+            const tasksList = tasks.filter(t => t.done).map(t => t.text).join(', ');
+            saveToSheet({
+                name: 'Checklist User',
+                company: tasks.length + ' tasks',
+                projectType: tasksList || 'No tasks completed',
+                goal: 'Checklist Usage',
+                budget: '',
+                timeline: '',
+                details: tasksList ? tasks.filter(t => t.done).length + ' of ' + tasks.length + ' completed' : 'Viewed checklist'
+            });
+        }
+
+        // Initialize questionnaire when opening
+        function openCard(cardId) {
+            document.getElementById('gameOverlay').classList.remove('active');
+            
+            if (cardId === 'checklist') {
+                renderTasks();
+                saveChecklistData();
+                document.getElementById('checklistOverlay').classList.add('active');
+            } else if (cardId === 'requirements') {
+                questionnaire.restart();
+                document.getElementById('requirementsOverlay').classList.add('active');
+            } else if (cardId === 'quote') {
+                document.getElementById('quoteOverlay').classList.add('active');
+            }
+        }
+
+        function toggleTodo(item) { item.classList.toggle('checked'); }
+        function toggleChecklist(item) { item.classList.toggle('completed'); }
+        function submitForm(e) { e.preventDefault(); document.getElementById('successModal').classList.add('active'); }
+        function closeModal() { document.getElementById('successModal').classList.remove('active'); }
+        function getQuote() {
+            const items = document.querySelectorAll('.checklist-item.completed');
+            if (items.length === 0) { alert('Please answer at least one question to get your quote!'); return; }
+            const message = "Hi! I want to get a quote for my project. Let's discuss!";
+            window.open(`https://wa.me/9156472904?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Lead Capture Functions
+        let pendingAction = '';
+        let hasAskedForLead = false;
+        
+        function showLeadModal(action) {
+            // Check if lead already exists (stored for 24 hours)
+            const existingLead = localStorage.getItem('TRS_current_lead');
+            if (existingLead && hasAskedForLead) {
+                try {
+                    const lead = JSON.parse(existingLead);
+                    if (lead && lead.email) {
+                        // Already has lead - do action directly, just track
+                        saveData({
+                            name: lead.name,
+                            company: lead.email,
+                            projectType: action,
+                            goal: lead.phone || 'No phone',
+                            budget: '',
+                            timeline: '',
+                            details: 'Returning visitor - Interest: ' + action
+                        });
+                        doAction(action);
+                        return;
+                    }
+                } catch(e) {
+                    console.log('Parse error', e);
+                }
+            }
+            
+            // Show modal to capture lead
+            hasAskedForLead = true;
+            pendingAction = action;
+            document.getElementById('leadAction').value = action;
+            document.getElementById('leadModal').classList.add('active');
+        }
+
+        function closeLeadModal() {
+            document.getElementById('leadModal').classList.remove('active');
+            // Still do the action even if they close without submitting
+            doAction(pendingAction);
+        }
+
+        function submitLead() {
+            const name = document.getElementById('leadName').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+            const action = pendingAction;
+
+            if (!name || !email) {
+                alert('Please enter your name and email!');
+                return;
+            }
+
+            // Save to localStorage
+            const leadData = {
+                name: name,
+                email: email,
+                phone: phone
+            };
+            localStorage.setItem('TRS_current_lead', JSON.stringify(leadData));
+
+            // Save to data store
+            saveData({
+                name: name,
+                company: email,
+                projectType: action,
+                goal: phone || 'No phone',
+                budget: '',
+                timeline: '',
+                details: 'New Lead - Interest: ' + action
+            });
+
+            alert('Thanks! We\'ll be in touch soon.');
+            closeLeadModal();
+        }
+
+        function doAction(action) {
+            if (action === 'WhatsApp') {
+                window.open('https://wa.me/9156472904', '_blank');
+            } else if (action === 'Email') {
+                window.location.href = 'mailto:sangeeta@thereviereestudios.in';
+            } else if (action === 'Checklist') {
+                trackClick('Checklist Opened');
+                openCard('checklist');
+            } else if (action === 'Requirements Quiz') {
+                trackClick('Requirements Quiz Opened');
+                openCard('requirements');
+            } else if (action === 'Get Quote') {
+                trackClick('Get Quote Opened');
+                openCard('quote');
+            } else if (action === 'Play Game') {
+                trackClick('Play Game Clicked');
+                openGame();
+            }
+        }
+    </script>
+</body>
+</html>

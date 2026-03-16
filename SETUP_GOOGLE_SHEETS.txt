@@ -1,0 +1,73 @@
+===========================================
+SETUP GOOGLE SHEETS FOR FORM SUBMISSIONS
+===========================================
+
+STEP 1: CREATE GOOGLE SHEET
+----------------------------
+1. Go to sheets.google.com
+2. Create new sheet named "TRS Form Submissions"
+3. In Row 1, add these headers (cells A1 to H1):
+   A: Name
+   B: Company
+   C: ProjectType
+   D: Goal
+   E: Budget
+   F: Timeline
+   G: Details
+   H: Date
+
+STEP 2: OPEN APPS SCRIPT
+-------------------------
+1. In your Google Sheet, click: Extensions → Apps Script
+2. Click "New Project"
+3. Delete any code there
+4. Paste the code below:
+
+===========================================
+CODE TO PASTE:
+===========================================
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  
+  const data = JSON.parse(e.postData.contents);
+  
+  sheet.appendRow([
+    data.name || '',
+    data.company || '',
+    data.projectType || '',
+    data.goal || '',
+    data.budget || '',
+    data.timeline || '',
+    data.details || '',
+    new Date()
+  ]);
+  
+  return ContentService.createTextOutput(JSON.stringify({ success: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+===========================================
+
+STEP 3: DEPLOY
+--------------
+1. Click the blue "Deploy" button (top right)
+2. Click "New deployment"
+3. Click the gear icon next to "Select type"
+4. Choose "Web app"
+5. Fill in:
+   - Description: "TRS Forms"
+   - Execute as: "Me"
+   - Who has access: "Anyone"
+6. Click "Deploy"
+7. Copy the "Web app URL" shown
+
+STEP 4: SEND URL TO ME
+-----------------------
+Copy that Web App URL and send it to me.
+I'll connect the forms to save data automatically!
+
+===========================================
+EXAMPLE URL WILL LOOK LIKE:
+https://script.google.com/macros/s/ABC123xyz.../exec
+===========================================
