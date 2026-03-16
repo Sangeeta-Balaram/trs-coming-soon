@@ -680,202 +680,24 @@
             padding: 20px 40px;
             background: linear-gradient(to top, rgba(0,0,0,0.95) 60%, transparent);
             gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .game-prompt-group::-webkit-scrollbar {
             display: none;
         }
 
-        .game-prompt-group button {
-            background: rgba(201, 169, 98, 0.15);
-            border: 1px solid rgba(201, 169, 98, 0.4);
-            color: var(--accent);
-            padding: 14px 24px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            flex: 1;
-            text-align: center;
-            max-width: 150px;
-        }
-
-        .game-prompt-group button:hover { 
-            background: rgba(201, 169, 98, 0.3); 
-            transform: translateY(-2px); 
-        }
-
         @media (max-width: 768px) {
             .game-prompt-group {
-                padding: 15px 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
-            .game-prompt-group button {
-                flex: 0 1 calc(50% - 10px);
-                max-width: none;
-            }
-        }
-
-        .game-prompt-group::-webkit-scrollbar {
-            display: none;
-        }
-
-        .game-prompt-group a,
-        .game-prompt-group .mini-card,
-        .game-prompt-group #gamePrompt {
-            background: rgba(201, 169, 98, 0.15);
-            border: 1px solid rgba(201, 169, 98, 0.4);
-            color: var(--accent);
-            padding: 12px 20px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-            flex-shrink: 0;
-            text-align: center;
-            min-width: 85px;
-        }
-
-        .mini-card {
-            background: rgba(201, 169, 98, 0.12);
-            border: 1px solid rgba(201, 169, 98, 0.3);
-        }
-
-        .game-prompt-group a:hover,
-        .game-prompt-group .mini-card:hover,
-        .game-prompt-group #gamePrompt:hover { 
-            background: rgba(201, 169, 98, 0.3); 
-            transform: translateY(-2px); 
-        }
-
-        .game-click-prompt {
-            background: rgba(201, 169, 98, 0.15);
-            border: 1px solid rgba(201, 169, 98, 0.4);
-            color: var(--accent);
-            padding: 12px 24px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .game-click-prompt:hover { background: rgba(201, 169, 98, 0.3); transform: scale(1.05); }
-
-        .action-cards-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .mini-card {
-            background: rgba(201, 169, 98, 0.12);
-            border: 1px solid rgba(201, 169, 98, 0.3);
-            padding: 12px 16px;
-            font-size: 0.65rem;
-        }
-
-        .mini-card:hover {
-            background: rgba(201, 169, 98, 0.25);
-            border-color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .choice-card {
-            background: rgba(201, 169, 98, 0.08);
-            border: 1px solid rgba(201, 169, 98, 0.2);
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .choice-card:hover { background: rgba(201, 169, 98, 0.15); border-color: var(--accent); transform: translateX(5px); }
-        .choice-card.selected { border-color: var(--accent); background: rgba(201, 169, 98, 0.2); }
-        .choice-card h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: 5px; }
-        .choice-card p { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); }
-
-        .result-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            border-radius: 12px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .result-overlay.success { border: 2px solid var(--success); }
-        .result-overlay.fail { border: 2px solid var(--danger); }
-
-        .result-overlay h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .result-overlay.success h3 { color: var(--success); }
-        .result-overlay.fail h3 { color: var(--danger); }
-        .result-overlay p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 40px 20px 120px;
-                min-height: 70vh;
-            }
-            
-            .logo {
-                font-size: 0.9rem;
-                padding-top: 40px;
-                margin-bottom: 1.5rem;
-                letter-spacing: 0.2em;
-            }
-            
-            .main-text {
-                font-size: clamp(1.5rem, 8vw, 2.5rem) !important;
-                line-height: 1.2;
-                margin-bottom: 1rem;
-            }
-            
-            .sub-text {
-                font-size: 0.8rem;
-                margin-bottom: 2rem;
-            }
-            
-            .loader-container {
-                width: 80px;
-                height: 80px;
-                margin-bottom: 2rem;
-            }
-            
-            .floating-elements .element {
-                opacity: 0.5;
-            }
-            
-            .element-1 { width: 150px !important; height: 150px !important; top: 5% !important; left: -10% !important; }
-            .element-2 { width: 100px !important; height: 100px !important; top: 50% !important; right: -5% !important; }
-            .element-3 { width: 80px !important; height: 80px !important; bottom: 15% !important; left: 5% !important; }
-            .element-4 { width: 60px !important; height: 60px !important; top: 20% !important; right: 10% !important; }
-            
-            .game-prompt-group {
+                max-width: 100%;
+                left: 0;
+                transform: none;
                 padding: 15px 15px 25px;
                 gap: 8px !important;
+            }
                 max-width: 100%;
             }
             
